@@ -23,7 +23,7 @@ data class Employee(
     @Column(name = "sal")
     var sal : Double?,
     @Column(name = "commission_pct")
-    var commission_pct : Double?,
+    var commissionPct : Double?,
     @Column(name = "deptno")
     var deptno : Int?,
 

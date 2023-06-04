@@ -4,12 +4,15 @@ import com.example.demo.model.Employee
 import com.example.demo.repository.EmployeeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.Optional
+import net.objecthunter.exp4j.ExpressionBuilder
+
+import java.util.*
 
 @Service
 class HelloService {
     @Autowired
     lateinit var employeeRepository: EmployeeRepository
+
 
     //WorkShop 1
     fun calGrade(score: Int): String {
@@ -45,10 +48,16 @@ class HelloService {
     }
 
     fun calByUser(formula: String): String {
-        return formula;
+        try {
+            var result = ExpressionBuilder(formula).build()
+            var res = result.evaluate()
+            return res.toString();
+        } catch (e: Exception) {
+            throw IllegalStateException("Your formula is invalid.")
+        }
     }
 
-    //WorkShop2
+    //WorkShop2 *******************************************************************************************
 
     fun getEmployees(): List<Employee> {
         var results: List<Employee> = employeeRepository.findAll()
@@ -57,7 +66,7 @@ class HelloService {
 
     fun createEmp(employee: Employee): String {
         if (employeeRepository.existsById(employee.empNo)) {
-            return "Created employee not success."
+            throw IllegalStateException("Created employee not success.")
         } else {
             employeeRepository.save(employee)
             return "Created employee success."
@@ -67,19 +76,22 @@ class HelloService {
     fun updateEmployeesId(empno: String, employee: Employee): String {
         val employFind = employeeRepository.findById(empno)
         if (employFind.isEmpty) {
-            return "Update not success."
+            throw IllegalStateException("Update not success.")
         }
 
         val empOne = employeeRepository.findByEmpNo(empno)
 
 //        empOne.empNo = if(employee.empNo.isEmpty()) empOne.empNo else employee.empNo
-        empOne.ename = if(employee.ename.toString().isEmpty()) empOne.ename else employee.ename
-        empOne.job = if(employee.job.toString().isEmpty()) empOne.job else employee.job
-        empOne.mgr = if(employee.mgr.toString().isEmpty()) empOne.mgr else employee.mgr
-        empOne.hiredate = if(employee.hiredate.toString().isEmpty()) empOne.hiredate else employee.hiredate
-        empOne.sal = if(employee.sal == null) empOne.sal else employee.sal
-        empOne.commission_pct = if(employee.commission_pct == null) empOne.commission_pct else employee.commission_pct
-        empOne.deptno = if(employee.deptno == null) empOne.deptno else employee.deptno
+        empOne.ename = if (employee.ename == "" || employee.ename == null) empOne.ename else employee.ename
+        empOne.job = if (employee.job == "" || employee.job == null) empOne.job else employee.job
+        empOne.mgr = if (employee.mgr == "" || employee.mgr == null) empOne.mgr else employee.mgr
+        empOne.hiredate =
+            if (employee.hiredate.toString() == "" || employee.hiredate == null) Date() else employee.hiredate
+        empOne.sal = if (employee.sal.toString() == "" || employee.sal == null) empOne.sal else employee.sal
+        empOne.commissionPct =
+            if (employee.commissionPct.toString() == "" || employee.commissionPct == null) empOne.commissionPct else employee.commissionPct
+        empOne.deptno =
+            if (employee.deptno.toString() == "" || employee.deptno == null) empOne.deptno else employee.deptno
         employeeRepository.save(empOne)
 
         return "Update success."
@@ -88,7 +100,7 @@ class HelloService {
 
     fun deleteEmployeesId(empno: String): String {
         if (!employeeRepository.existsById(empno)) {
-            return "Deleted employee not success."
+            throw IllegalStateException("Deleted employee not success.")
         } else {
             employeeRepository.deleteById(empno)
             return "Deleted employee success."
@@ -96,9 +108,59 @@ class HelloService {
     }
 
     fun getEmployeesId(empno: String): Employee {
-        var results = employeeRepository.findByEmpNoEquals(empno)
+        if (!employeeRepository.existsById(empno)) {
+            throw IllegalStateException("Not found employee.")
+        }
+        val results = employeeRepository.findByEmpNoEquals(empno)
         return results
     }
 
+    fun getEmployeesEname(ename: String): List<Employee> {
+        if (employeeRepository.findByEname(ename).isEmpty()) {
+            throw IllegalStateException("Not found employee.")
+        }
+        return employeeRepository.findByEname(ename)
+    }
 
+    fun getEmployeesJob(job: String): List<Employee> {
+        if (employeeRepository.findByJob(job).isEmpty()) {
+            throw IllegalStateException("Not found employee.")
+        }
+        return employeeRepository.findByJob(job)
+    }
+
+    fun getEmployeesMgr(mgr: String): List<Employee> {
+        if (employeeRepository.findByMgr(mgr).isEmpty()) {
+            throw IllegalStateException("Not found employee.")
+        }
+        return employeeRepository.findByMgr(mgr)
+    }
+
+    fun getEmployeesHiredate(hiredate: Date): List<Employee> {
+        if (employeeRepository.findByHiredate(hiredate).isEmpty()) {
+            throw IllegalStateException("Not found employee.")
+        }
+        return employeeRepository.findByHiredate(hiredate)
+    }
+
+    fun getEmployeesSal(sal: Double): List<Employee> {
+        if (employeeRepository.findBySal(sal).isEmpty()) {
+            throw IllegalStateException("Not found employee.")
+        }
+        return employeeRepository.findBySal(sal)
+    }
+
+    fun getEmployeesCommissionPct(commissionPct: Double): List<Employee> {
+        if (employeeRepository.findByCommissionPct(commissionPct).isEmpty()) {
+            throw IllegalStateException("Not found employee.")
+        }
+        return employeeRepository.findByCommissionPct(commissionPct)
+    }
+
+    fun getEmployeesDeptno(deptno: Int): List<Employee> {
+        if (employeeRepository.findByDeptno(deptno).isEmpty()) {
+            throw IllegalStateException("Not found employee.")
+        }
+        return employeeRepository.findByDeptno(deptno)
+    }
 }

@@ -3,6 +3,7 @@ package com.example.demo.controller
 import com.example.demo.model.Employee
 import com.example.demo.service.HelloService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.server.ResponseStatusException
+import java.util.Date
 
 @RestController
 class HelloController {
@@ -33,7 +36,7 @@ class HelloController {
 
     @PatchMapping("updateEmp/{empNo}")
     fun updateEmp(@PathVariable("empNo") empNo : String,@RequestBody employee: Employee) : String{
-        return helloService.updateEmployeesId(empNo,employee)
+            return helloService.updateEmployeesId(empNo,employee)
     }
 
     @DeleteMapping("employee/{empNo}")
@@ -42,8 +45,43 @@ class HelloController {
     }
 
     @GetMapping("employee/{empNo}")
-    fun getEmployees(@PathVariable("empNo") empNo : String) : Employee{
-        return helloService.getEmployeesId(empNo)
+    fun getEmployeesByEmpNo(@PathVariable("empNo") empNo : String) : Employee{
+            return helloService.getEmployeesId(empNo)
+    }
+
+    @GetMapping("employeeByEname/{ename}")
+    fun getEmployeesByEname(@PathVariable("ename") ename : String) : List<Employee>{
+        return helloService.getEmployeesEname(ename)
+    }
+
+    @GetMapping("employeeByJob/{job}")
+    fun getEmployeesByJob(@PathVariable("job") job : String) : List<Employee>{
+        return helloService.getEmployeesJob(job.uppercase())
+    }
+
+    @GetMapping("employeeByMgr/{mgr}")
+    fun getEmployeesByMgr(@PathVariable("mgr") mgr : String) : List<Employee>{
+        return helloService.getEmployeesMgr(mgr)
+    }
+
+    @GetMapping("employeeByHiredate/{hiredate}")
+    fun getEmployeesByHiredate(@PathVariable("hiredate") hiredate : Date) : List<Employee>{
+        return helloService.getEmployeesHiredate(hiredate)
+    }
+
+    @GetMapping("employeeBySal/{sal}")
+    fun getEmployeesBySal(@PathVariable("sal") sal: Double) : List<Employee>{
+        return helloService.getEmployeesSal(sal)
+    }
+
+    @GetMapping("employeeByCommissionPct/{commissionPct}")
+    fun getEmployeesByCommissionPct(@PathVariable("commissionPct") commissionPct: Double) : List<Employee>{
+        return helloService.getEmployeesCommissionPct(commissionPct)
+    }
+
+    @GetMapping("employeeByDeptno/{deptno}")
+    fun getEmployeesByDeptno(@PathVariable("deptno") commissionPct: Int) : List<Employee>{
+        return helloService.getEmployeesDeptno(commissionPct)
     }
 
     //WorkShop 1
@@ -60,15 +98,6 @@ class HelloController {
     @GetMapping("calculateByUser/{formula}")
     fun calculateByUser (@PathVariable("formula") formula : String)
     : String{
-        val input = "5+5"
-        val regexPattern = Regex("[1234567890+\\-*/.()]")
-        val matches = input.matches(regexPattern)
-        return matches.toString()
-
-//        if(formula.matches(regexPattern)){
-//            return "math"
-//        }else{
-//            return "not math"
-//        }
+            return helloService.calByUser(formula.trim())
     }
 }
