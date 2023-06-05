@@ -1,6 +1,7 @@
 package com.example.demo.service
 
 import com.example.demo.model.Employee
+import com.example.demo.model.Sumsal
 import com.example.demo.repository.EmployeeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -162,5 +163,12 @@ class HelloService {
             throw IllegalStateException("Not found employee.")
         }
         return employeeRepository.findByDeptno(deptno)
+    }
+
+    fun getEmployeesSumSalAndCountEmployee(mgr: String): Optional<Sumsal> {
+        if(employeeRepository.findSumSalAndCountEmployee(mgr).isEmpty){
+            throw IllegalStateException("Not found employee.")
+        }
+        return employeeRepository.findSumSalAndCountEmployee(mgr)
     }
 }
