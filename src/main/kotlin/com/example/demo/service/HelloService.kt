@@ -6,6 +6,8 @@ import com.example.demo.repository.EmployeeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import net.objecthunter.exp4j.ExpressionBuilder
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 import java.util.*
 
@@ -87,7 +89,7 @@ class HelloService {
         empOne.job = if (employee.job == "" || employee.job == null) empOne.job else employee.job
         empOne.mgr = if (employee.mgr == "" || employee.mgr == null) empOne.mgr else employee.mgr
         empOne.hiredate =
-            if (employee.hiredate.toString() == "" || employee.hiredate == null) Date() else employee.hiredate
+            if (employee.hiredate.toString() == "" || employee.hiredate == null) LocalDate.now() else employee.hiredate
         empOne.sal = if (employee.sal.toString() == "" || employee.sal == null) empOne.sal else employee.sal
         empOne.commissionPct =
             if (employee.commissionPct.toString() == "" || employee.commissionPct == null) empOne.commissionPct else employee.commissionPct
@@ -137,7 +139,7 @@ class HelloService {
         return employeeRepository.findByMgr(mgr)
     }
 
-    fun getEmployeesHiredate(hiredate: Date): List<Employee> {
+    fun getEmployeesHiredate(hiredate: LocalDate): List<Employee> {
         if (employeeRepository.findByHiredate(hiredate).isEmpty()) {
             throw IllegalStateException("Not found employee.")
         }

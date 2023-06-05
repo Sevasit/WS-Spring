@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @RestController
@@ -64,8 +66,9 @@ class HelloController {
     }
 
     @GetMapping("employeeByHiredate/{hiredate}")
-    fun getEmployeesByHiredate(@PathVariable("hiredate") hiredate: Date): List<Employee> {
-        return helloService.getEmployeesHiredate(hiredate)
+    fun getEmployeesByHiredate(@PathVariable("hiredate") hiredate: String): List<Employee> {
+        val date = LocalDate.parse(hiredate, DateTimeFormatter.ISO_DATE)
+        return helloService.getEmployeesHiredate(date)
     }
 
     @GetMapping("employeeBySal/{sal}")
