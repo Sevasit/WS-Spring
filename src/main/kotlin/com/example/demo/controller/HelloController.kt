@@ -50,41 +50,46 @@ class HelloController {
         return helloService.getEmployeesId(empNo)
     }
 
-    @GetMapping("employeeByEname/{ename}")
-    fun getEmployeesByEname(@PathVariable("ename") ename: String): List<Employee> {
-        return helloService.getEmployeesEname(ename)
+    @GetMapping("seachBy/{field}/{value}")
+    fun getEmployeesBySeach(@PathVariable("field") field: String,@PathVariable("value") value: String): List<Employee> {
+        return helloService.getEmployeesSeach(field,value)
     }
 
-    @GetMapping("employeeByJob/{job}")
-    fun getEmployeesByJob(@PathVariable("job") job: String): List<Employee> {
-        return helloService.getEmployeesJob(job.uppercase())
-    }
-
-    @GetMapping("employeeByMgr/{mgr}")
-    fun getEmployeesByMgr(@PathVariable("mgr") mgr: String): List<Employee> {
-        return helloService.getEmployeesMgr(mgr)
-    }
-
-    @GetMapping("employeeByHiredate/{hiredate}")
-    fun getEmployeesByHiredate(@PathVariable("hiredate") hiredate: String): List<Employee> {
-        val date = LocalDate.parse(hiredate, DateTimeFormatter.ISO_DATE)
-        return helloService.getEmployeesHiredate(date)
-    }
-
-    @GetMapping("employeeBySal/{sal}")
-    fun getEmployeesBySal(@PathVariable("sal") sal: Double): List<Employee> {
-        return helloService.getEmployeesSal(sal)
-    }
-
-    @GetMapping("employeeByCommissionPct/{commissionPct}")
-    fun getEmployeesByCommissionPct(@PathVariable("commissionPct") commissionPct: Double): List<Employee> {
-        return helloService.getEmployeesCommissionPct(commissionPct)
-    }
-
-    @GetMapping("employeeByDeptno/{deptno}")
-    fun getEmployeesByDeptno(@PathVariable("deptno") commissionPct: Int): List<Employee> {
-        return helloService.getEmployeesDeptno(commissionPct)
-    }
+//    @GetMapping("employeeByEname/{ename}")
+//    fun getEmployeesByEname(@PathVariable("ename") ename: String): List<Employee> {
+//        return helloService.getEmployeesEname(ename)
+//    }
+//
+//    @GetMapping("employeeByJob/{job}")
+//    fun getEmployeesByJob(@PathVariable("job") job: String): List<Employee> {
+//        return helloService.getEmployeesJob(job.uppercase())
+//    }
+//
+//    @GetMapping("employeeByMgr/{mgr}")
+//    fun getEmployeesByMgr(@PathVariable("mgr") mgr: String): List<Employee> {
+//        return helloService.getEmployeesMgr(mgr)
+//    }
+//
+//    @GetMapping("employeeByHiredate/{hiredate}")
+//    fun getEmployeesByHiredate(@PathVariable("hiredate") hiredate: String): List<Employee> {
+//        val date = LocalDate.parse(hiredate, DateTimeFormatter.ISO_DATE)
+//        return helloService.getEmployeesHiredate(date)
+//    }
+//
+//    @GetMapping("employeeBySal/{sal}")
+//    fun getEmployeesBySal(@PathVariable("sal") sal: Double): List<Employee> {
+//        return helloService.getEmployeesSal(sal)
+//    }
+//
+//    @GetMapping("employeeByCommissionPct/{commissionPct}")
+//    fun getEmployeesByCommissionPct(@PathVariable("commissionPct") commissionPct: Double): List<Employee> {
+//        return helloService.getEmployeesCommissionPct(commissionPct)
+//    }
+//
+//    @GetMapping("employeeByDeptno/{deptno}")
+//    fun getEmployeesByDeptno(@PathVariable("deptno") commissionPct: Int): List<Employee> {
+//        return helloService.getEmployeesDeptno(commissionPct)
+//    }
 
     @GetMapping("employeeBySumSalAndCountEmployee/{mgr}")
     fun getEmployeesBySumSalAndCountEmployee(@PathVariable("mgr") mgr: String): Optional<Sumsal> {

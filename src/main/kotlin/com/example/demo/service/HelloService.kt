@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service
 import net.objecthunter.exp4j.ExpressionBuilder
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 import java.util.*
 
@@ -118,57 +119,108 @@ class HelloService {
         return results
     }
 
-    fun getEmployeesEname(ename: String): List<Employee> {
-        if (employeeRepository.findByEname(ename).isEmpty()) {
-            throw IllegalStateException("Not found employee.")
+    fun getEmployeesSeach(field: String, value: String): List<Employee> {
+        when (field) {
+            "ename" -> {
+                if(employeeRepository.findByEname(value).isEmpty()){
+                    throw IllegalStateException("Not found.")
+                }
+                return employeeRepository.findByEname(value)
+            }
+            "job" -> {
+                if(employeeRepository.findByJob(value).isEmpty()){
+                    throw IllegalStateException("Not found.")
+                }
+                return employeeRepository.findByJob(value)
+            }
+            "mgr" -> {
+                if(employeeRepository.findByMgr(value).isEmpty()){
+                    throw IllegalStateException("Not found.")
+                }
+                return employeeRepository.findByMgr(value)
+            }
+            "hiredate" -> {
+                val date = LocalDate.parse(value, DateTimeFormatter.ISO_DATE)
+                if(employeeRepository.findByHiredate(date).isEmpty()){
+                    throw IllegalStateException("Not found.")
+                }
+                return employeeRepository.findByHiredate(date)
+            }
+            "sal" -> {
+                if(employeeRepository.findBySal(value.toDouble()).isEmpty()){
+                    throw IllegalStateException("Not found.")
+                }
+                return employeeRepository.findBySal(value.toDouble())
+            }
+            "commissionPct" -> {
+                if(employeeRepository.findByCommissionPct(value.toDouble()).isEmpty()){
+                    throw IllegalStateException("Not found.")
+                }
+                return employeeRepository.findByCommissionPct(value.toDouble())
+            }
+            "deptno" -> {
+                if(employeeRepository.findByDeptno(value.toInt()).isEmpty()){
+                    throw IllegalStateException("Not found.")
+                }
+                return employeeRepository.findByDeptno(value.toInt())
+            }
+            else -> {
+                throw IllegalStateException("Invalid field.")
+            }
         }
-        return employeeRepository.findByEname(ename)
     }
 
-    fun getEmployeesJob(job: String): List<Employee> {
-        if (employeeRepository.findByJob(job).isEmpty()) {
-            throw IllegalStateException("Not found employee.")
-        }
-        return employeeRepository.findByJob(job)
-    }
-
-    fun getEmployeesMgr(mgr: String): List<Employee> {
-        if (employeeRepository.findByMgr(mgr).isEmpty()) {
-            throw IllegalStateException("Not found employee.")
-        }
-        return employeeRepository.findByMgr(mgr)
-    }
-
-    fun getEmployeesHiredate(hiredate: LocalDate): List<Employee> {
-        if (employeeRepository.findByHiredate(hiredate).isEmpty()) {
-            throw IllegalStateException("Not found employee.")
-        }
-        return employeeRepository.findByHiredate(hiredate)
-    }
-
-    fun getEmployeesSal(sal: Double): List<Employee> {
-        if (employeeRepository.findBySal(sal).isEmpty()) {
-            throw IllegalStateException("Not found employee.")
-        }
-        return employeeRepository.findBySal(sal)
-    }
-
-    fun getEmployeesCommissionPct(commissionPct: Double): List<Employee> {
-        if (employeeRepository.findByCommissionPct(commissionPct).isEmpty()) {
-            throw IllegalStateException("Not found employee.")
-        }
-        return employeeRepository.findByCommissionPct(commissionPct)
-    }
-
-    fun getEmployeesDeptno(deptno: Int): List<Employee> {
-        if (employeeRepository.findByDeptno(deptno).isEmpty()) {
-            throw IllegalStateException("Not found employee.")
-        }
-        return employeeRepository.findByDeptno(deptno)
-    }
+//    fun getEmployeesEname(ename: String): List<Employee> {
+//        if (employeeRepository.findByEname(ename).isEmpty()) {
+//            throw IllegalStateException("Not found employee.")
+//        }
+//        return employeeRepository.findByEname(ename)
+//    }
+//
+//    fun getEmployeesJob(job: String): List<Employee> {
+//        if (employeeRepository.findByJob(job).isEmpty()) {
+//            throw IllegalStateException("Not found employee.")
+//        }
+//        return employeeRepository.findByJob(job)
+//    }
+//
+//    fun getEmployeesMgr(mgr: String): List<Employee> {
+//        if (employeeRepository.findByMgr(mgr).isEmpty()) {
+//            throw IllegalStateException("Not found employee.")
+//        }
+//        return employeeRepository.findByMgr(mgr)
+//    }
+//
+//    fun getEmployeesHiredate(hiredate: LocalDate): List<Employee> {
+//        if (employeeRepository.findByHiredate(hiredate).isEmpty()) {
+//            throw IllegalStateException("Not found employee.")
+//        }
+//        return employeeRepository.findByHiredate(hiredate)
+//    }
+//
+//    fun getEmployeesSal(sal: Double): List<Employee> {
+//        if (employeeRepository.findBySal(sal).isEmpty()) {
+//            throw IllegalStateException("Not found employee.")
+//        }
+//        return employeeRepository.findBySal(sal)
+//    }
+//
+//    fun getEmployeesCommissionPct(commissionPct: Double): List<Employee> {
+//        if (employeeRepository.findByCommissionPct(commissionPct).isEmpty()) {
+//            throw IllegalStateException("Not found employee.")
+//        }
+//        return employeeRepository.findByCommissionPct(commissionPct)
+//    }
+//
+//    fun getEmployeesDeptno(deptno: Int): List<Employee> {
+//        if (employeeRepository.findByDeptno(deptno).isEmpty()) {
+//            throw IllegalStateException("Not found employee.")
+//        }
+//        return employeeRepository.findByDeptno(deptno)
+//    }
 
     fun getEmployeesSumSalAndCountEmployee(mgr: String): Optional<Sumsal> {
-        if(employeeRepository.findSumSalAndCountEmployee(mgr).isEmpty){
+        if (employeeRepository.findSumSalAndCountEmployee(mgr).isEmpty) {
             throw IllegalStateException("Not found employee.")
         }
         return employeeRepository.findSumSalAndCountEmployee(mgr)
