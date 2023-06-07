@@ -1,7 +1,9 @@
 package com.example.demo.service
 
+import com.example.demo.model.Department
 import com.example.demo.model.Employee
 import com.example.demo.model.Sumsal
+import com.example.demo.repository.DepartmentRepository
 import com.example.demo.repository.EmployeeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -16,6 +18,8 @@ import java.util.*
 class HelloService {
     @Autowired
     lateinit var employeeRepository: EmployeeRepository
+    @Autowired
+    lateinit var departmentRepository: DepartmentRepository
 
 
     //WorkShop 1
@@ -65,6 +69,11 @@ class HelloService {
 
     fun getEmployees(): List<Employee> {
         var results: List<Employee> = employeeRepository.findAll()
+        return results
+    }
+
+    fun getDepartments(): List<Department> {
+        var results: List<Department> = departmentRepository.findAll()
         return results
     }
 
